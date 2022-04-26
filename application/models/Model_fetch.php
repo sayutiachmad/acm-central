@@ -393,6 +393,7 @@ class Model_fetch extends CI_Model {
 			'MAX(tp_tanggal) AS tanggal_trx'
 		));
 		$this->db->from('trx_penjualan');
+		$this->db->where('tp_unit', $unit);
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 

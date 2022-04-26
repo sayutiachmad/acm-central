@@ -18,7 +18,7 @@ class Fetch extends CI_Controller {
 			if($chk_ident){
 				$this->getTransaction($identifier);
 			}else{
-				exit("Unrecognized request");
+				exit("Unrecognized request : ".$identifier);
 			}
 
 
