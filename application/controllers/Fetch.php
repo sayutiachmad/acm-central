@@ -30,6 +30,7 @@ class Fetch extends CI_Controller {
 
 	private function getTransaction($identifier){
 
+		$res = $this->model_fetch->selectTransaction($identifier);
 		$res = $this->model_fetch->selectTransactionStokis($identifier);
 
 		return $res;
