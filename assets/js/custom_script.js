@@ -61,7 +61,8 @@ function init_date_ymd(){
 }
 
 function init_daterange(orientation = 'right'){
-    var start = moment().subtract(1, 'week');
+
+    var start = moment().startOf('month');
     var end = moment();
 
     $("input.daterangepick").daterangepicker({
