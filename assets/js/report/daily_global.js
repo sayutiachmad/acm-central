@@ -157,7 +157,7 @@ function initReportGrid(){
                     }
 
                     if(row.tp_keterangan == 'PMU'){
-                        return row.mitra_name;
+                        return row.tp_mitra_name;
                     }
 
                     return "<center> - </center>";
