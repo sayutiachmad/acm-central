@@ -13,8 +13,8 @@
 					<div class="row">
 						<div class="col-12 col-md-3">
 							<label>Unit</label>
-							<select class="form-control select2" name="fl_unit" data-placeholder="Pilih Unit ACM">
-								<option></option>
+							<select class="form-control select2" name="fl_unit">
+								<option value="ALL">Semua Unit</option>
 								<?php foreach ($list_unit as $key => $value) { ?>
 									<option value="<?php echo $value[FIELD_PLANT_ID];?>"><?php echo $value[FIELD_PLANT_NAME];?></option>
 								<?php } ?>

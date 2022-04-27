@@ -25,7 +25,7 @@ class Model_report extends CI_Model {
 		$this->db->join(TABLE_PLANT.' un', 'un.'.FIELD_PLANT_ID.' = trx.tp_unit', 'left');
 
 
-		if($data['fl_unit']){
+		if($data['fl_unit'] !== "ALL"){
 			$this->db->where('trx.tp_unit', $data['fl_unit']);
 		}
 

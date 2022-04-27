@@ -152,11 +152,11 @@ function initReportGrid(){
                 "data":"tp_customer_name",
                 "class":"dt-nowrap",
                 "render":function(data,type,row,meta){
-                    if(row.jual_customer > 0){
+                    if(row.tp_customer > 0){
                         return data;
                     }
 
-                    if(row.jual_keterangan == 'PMU'){
+                    if(row.tp_keterangan == 'PMU'){
                         return row.mitra_name;
                     }
 
