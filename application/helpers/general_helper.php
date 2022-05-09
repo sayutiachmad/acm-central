@@ -311,4 +311,10 @@ if ( ! function_exists('number_to_words'))
 		    return array_keys($arr) !== range(0, count($arr) - 1);
 		}
 	}
+
+	if(!function_exists('rand_color')){
+		function rand_color() {
+		    return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+		}
+	}
 }
