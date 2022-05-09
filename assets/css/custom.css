@@ -216,3 +216,14 @@ hr.double-line{
 .text-sm .dropdown-toggle::after{
     vertical-align: 0.1rem;
 }
+
+.dropdown-item.active .btn-link, .dropdown-item.active a:not(.dropdown-item):not(.btn-app):not(.nav-link):not(.brand-link):not(.page-link):not(.btn){
+    color: #FFF;
+}
+
+div.dataTables_processing{
+    color: #FFF;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: block;
+    z-index: 999;
+}

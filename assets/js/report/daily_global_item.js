@@ -7,10 +7,17 @@ $(document).ready(function(){
 	initButton();
 });
 
-function initReportGrid(){
+function initButton(){
 
+	$('#btn-filter').on('click', function(){
+		grid.ajax.reload();
+	});
+
+}
+
+function initReportGrid(){
 	grid = $('#tbl-data').DataTable({
-        responsive: true,
+        responsive: false,
         scrollCollapse: true,
         scrollX:true,
         paging: false,
@@ -50,7 +57,7 @@ function initReportGrid(){
             $('[data-toggle="popover"]').popover();
         },
         ajax:{
-            url: base_url+"report/get_daily_global",
+            url: base_url+"report/get_daily_global_item",
             method:'post',
             data:function(d){
                 return $('#form-filter').serializeArray();
@@ -60,7 +67,7 @@ function initReportGrid(){
             dataSrc:"tanggal_transaksi",
             startRender: function(rows, group){
 
-                var index = 6;
+                var index = 13;
 
                 var gtHarpok = rows
                     .cells(rows.indexes(), index++)
@@ -93,24 +100,24 @@ function initReportGrid(){
 
                 return $('<tr/>')
                         .append( 
-                            '<td colspan="5"><strong>Penjualan Tanggal '+moment(group).format('DD-MMM-YYYY')+'</strong></td>'+
+                            '<td colspan="12"><strong>Penjualan Tanggal '+moment(group).format('DD-MMM-YYYY')+'</strong></td>'+
                             '<td class="text-right"><strong>'+ numeral(gtHarpok).format('0,0') +'</strong></td>'+
                             '<td class="text-right"><strong>'+ numeral(gtHarjul).format('0,0') +'</strong></td>'+
                             '<td class="text-right"><strong>'+ numeral(gtDisc).format('0,0') +'</strong></td>'+
                             '<td class="text-right"><strong>'+ numeral(gtNet).format('0,0') +'</strong></td>'+
                             '<td class="text-right"><strong>'+ numeral(gtMargin).format('0,0') +'</strong></td>'+
-                            '<td colspan="5"></td>'
+                            '<td colspan="4"></td>'
                         )
             }
         },
         initComplete:function(settings,json){
-            $('#tbl-penjualan tbody').on( 'click', 'tr.dtrg-group.dtrg-start.dtrg-level-0', function (e) {
-                    e.preventDefault();
-                    var rowsCollapse = $(this).nextUntil('.dtrg-group');
-                    $(rowsCollapse).toggleClass('hidden');
+            $('#tbl-data tbody').on( 'click', 'tr.dtrg-group.dtrg-start.dtrg-level-0', function (e) {
+                e.preventDefault();
+                var rowsCollapse = $(this).nextUntil('.dtrg-group');
+                $(rowsCollapse).toggleClass('hidden');
             });
-            $($.fn.dataTable.tables(true)).DataTable()
-                  .columns.adjust();
+
+
         },
         columns:[
             {
@@ -120,7 +127,7 @@ function initReportGrid(){
                 "class":'dt-nowrap',
             },
             {
-                "data":"tp_tanggal_jual",
+                "data":"tanggal_jual",
                 "class":"dt-nowrap",
                 "visible":false,
                 "render":function(data,type,row,meta){
@@ -161,7 +168,7 @@ function initReportGrid(){
                     }
 
                     if(row.tp_keterangan == 'PMU'){
-                        return row.tp_mitra_name;
+                        return row.mitra_name;
                     }
 
                     return "<center> - </center>";
@@ -181,41 +188,29 @@ function initReportGrid(){
                 } 
             },
             {
-                "data":"total_harpok",
+                "data":"dp_barang_id",
+                "class":"dt-nowrap"
+            },
+            {
+                "data":"dp_barang_nama",
+                "class":"dt-nowrap",
+            },
+            {
+                "data":"dp_barang_satuan",
+                "class":"dt-nowrap",
+            },
+            {
+                "data":"dp_barang_harpok",
                 "class":"text-right dt-nowrap",
                 "render":function(data,type,row,meta){
-                    
-
                     return numeral(data).format('0,0');
                 }
             },
             {
-                "data":"total_harjul",
+                "data":"dp_barang_harjul",
                 "class":"text-right dt-nowrap",
                 "render":function(data,type,row,meta){
-                    
                     return numeral(data).format('0,0');
-                }
-            },
-            {
-                "data":"total_diskon",
-                "class":"text-right",
-                "render":function(data,type,row,meta){
-                    if(row.jual_status == 1){
-                        return 0
-                    }
-                    return numeral(data).format('0,0');
-                }
-            },
-            {
-                "data":"total_jual",
-                "class":"text-right",
-                "render":function(data,type,row){
-
-                    
-
-                    return numeral(data).format('0,0');
-
                 }
             },
             {
@@ -223,12 +218,80 @@ function initReportGrid(){
                 "defaultContent":"",
                 "class":"text-right",
                 "render":function(data,type,row,meta){
-                    let ppu = parseFloat(row.tp_total_harjul)-parseFloat(row.tp_total_harpok);
-                    let disc = row.tp_total_diskon;
+                    let ppu = parseFloat(row.dp_barang_harjul)-parseFloat(row.dp_barang_harpok); //profit per unit
+                    return numeral(ppu).format('0,0');
+                }
+            },
+            {
+                "data":"dp_qty",
+                "render":function(data,type,row,meta){
+                    return '<center>'+numeral(data).format('0,0')+'</center>';
+                }
+            },
+            {
+                "data":"dp_barang_harpok",
+                "class":"text-right dt-nowrap",
+                "render":function(data,type,row,meta){
+                    let qty = row.dp_qty;
+                    let total_harpok = parseFloat(data)*parseFloat(qty);
 
-                    let profit = parseFloat(ppu)- parseFloat(disc);
+                    if(row.tp_status == 1){
+                        return 0
+                    }
 
-                    if(row.jual_status == 1){
+                    return numeral(total_harpok).format('0,0');
+                }
+            },
+            {
+                "data":"dp_barang_harjul",
+                "class":"text-right dt-nowrap",
+                "render":function(data,type,row,meta){
+                    let qty = row.dp_qty;
+                    let total_harjul = parseFloat(data)*parseFloat(qty);
+
+                    if(row.tp_status == 1){
+                        return 0
+                    }
+
+                    return numeral(total_harjul).format('0,0');
+                }
+            },
+            {
+                "data":"dp_diskon",
+                "class":"text-right",
+                "render":function(data,type,row,meta){
+                    if(row.tp_status == 1){
+                        return 0
+                    }
+                    return numeral(data).format('0,0');
+                }
+            },
+            {
+                "data":"dp_diskon",
+                "class":"text-right",
+                "render":function(data,type,row){
+
+                    let qty = row.dp_qty;
+                    let harjul = row.dp_barang_harjul;
+
+                    let net = (parseFloat(harjul)*parseFloat(qty)) - parseFloat(data);
+
+                    return numeral(net).format('0,0');
+
+                }
+            },
+            {
+                "data":"null",
+                "defaultContent":"",
+                "class":"text-right",
+                "render":function(data,type,row,meta){
+                    let ppu = parseFloat(row.dp_barang_harjul)-parseFloat(row.dp_barang_harpok);
+                    let qty = row.dp_qty;
+                    let disc = row.dp_diskon;
+
+                    let profit = ( parseFloat(ppu)*parseFloat(qty) ) - parseFloat(disc);
+
+                    if(row.tp_status == 1){
                         return 0
                     }
 
@@ -253,62 +316,15 @@ function initReportGrid(){
             },
             {
                 "data":"tp_metode_pembayaran",
-                "render":function(data,type,row){
-
-                    if(data == "TRF"){
-                        var ret = '<div>';
-                        ret += '<span class="badge badge-primary">Transfer</span>';
-
-                        if(row.bank_name != null){
-                            ret += '&nbsp;';
-                            ret += '<span class="badge badge-warning">'+row.bank_name+'</span>';
-                        }
-                        ret += '</div>';
-
-                        return '<center>'+ret+'</center>';
-                    }
-
-                    if(data == 'CSH'){
-                        return '<center><span class="badge badge-warning">Cash</span></center>';
-                    }
-
-                    if(data == 'PGJ'){
-                        return '<center><span class="badge badge-info">Potong Gaji</span></center>';
-                    }
-
-                    return '-';
-
-
-                }
-            },
-            {
-                "data":"tp_tanggal_pembayaran",
-                "defaultContent":"",
                 "render":function(data){
 
-                    var dt = moment(data,"YYYY-MM-DD HH:mm:ss",true)
-
-                    if(!dt.isValid()){
-                        return "-"; 
-                    }
-                    
-
-                    return '<strong><a href="javascript:;" class="view-img">'+moment(data).format('DD-MMM-YYYY')+'</a></strong>';
-                }
-            },
-            {
-                "data":"tp_tanggal_pembayaran",
-                "defaultContent":"",
-                "render":function(data,type,row){
-
-                    var dt = moment(data,"YYYY-MM-DD HH:mm:ss",true);
-                    var dt_buy = moment(row.tp_tanggal, "YYYY-MM-DD HH:mm:ss",true);
-
-                    if(!dt.isValid()){
-                        return "-"; 
+                    if(data == "TRF"){
+                        return '<center><span class="badge badge-primary">Transfer</span></center>';
                     }
 
-                    return dt.diff(dt_buy, 'days')+" Hari";
+                    return '<center><span class="badge badge-warning">Cash</span></center>';
+
+
                 }
             },
             {
@@ -321,14 +337,20 @@ function initReportGrid(){
                         return '<center><span class="badge bg-olive">Retail Karyawan</span></center>';
                     }else if(data == "AGN"){
                         return '<center><span class="badge bg-purple">Agen</span></center>';
-                    }else if(data == "PMU"){
-                        return '<center><span class="badge badge-warning">Mitra Umum</span></center>';
-                    }else{
-                        return "<center> - </center>";
                     }
+    
+
+                    return "<center> - </center>";
+                    
 
                 }
             },
+            {
+                "data":"kategori_nama",
+                "class":"dt-nowrap",
+                "defaultContent":""
+            }
+            
         ],
         order:[[1, 'desc'],[3,'asc']]
     });
@@ -352,13 +374,4 @@ function initReportGrid(){
             }
           })
     } );
-
-}
-
-function initButton(){
-
-	$('#btn-filter').on('click', function(){
-		grid.ajax.reload();
-	});
-
 }
