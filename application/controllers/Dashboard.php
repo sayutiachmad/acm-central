@@ -66,13 +66,14 @@ class Dashboard extends CI_Controller {
 
 			for ($i = 0; $i < count($holder['unit_name']) ; $i++) {
 
-				$color = rand_color();
+				$color = $this->chartColor();
 
 				$chart['datasets'][] = array(
 					'label'	=> $holder['unit_name'][$i],
 					'data'	=> $holder['data'][$holder['unit_name'][$i]],
-					'borderColor' => $color,
-			     	'backgroundColor' => $color,
+					'borderColor' => $color[$i],
+			     	'backgroundColor' => $color[$i],
+			     	'borderRadius'	=> 100,
 				); 
 				
 			}
@@ -112,13 +113,13 @@ class Dashboard extends CI_Controller {
 
 			for ($i = 0; $i < count($holder['unit_name']) ; $i++) {
 
-				$color = rand_color();
+				$color = $this->chartColor();
 
 				$chart['datasets'][] = array(
 					'label'	=> $holder['unit_name'][$i],
 					'data'	=> $holder['data'][$holder['unit_name'][$i]],
-					'borderColor' => $color,
-			     	'backgroundColor' => $color,
+					'borderColor' => $color[$i],
+			     	'backgroundColor' => $color[$i],
 				); 
 				
 			}
@@ -129,6 +130,22 @@ class Dashboard extends CI_Controller {
 		}else{
 			exit(NO_DIRECT_ACCESS);
 		}
+
+	}
+
+	private function chartColor(){
+
+		$color = array(
+			'rgb(255, 99, 132)', //red
+			'rgb(255, 159, 64)', //orange
+			'rgb(255, 205, 86)', //yellow
+			'rgb(75, 192, 192)', //green
+			'rgb(54, 162, 235)', //blue
+			'rgb(153, 102, 255)', //purple
+			'rgb(201, 203, 207)' //grey
+		);
+
+		return $color;
 
 	}
 
