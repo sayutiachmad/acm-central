@@ -73,7 +73,8 @@ class Dashboard extends CI_Controller {
 					'data'	=> $holder['data'][$holder['unit_name'][$i]],
 					'borderColor' => $color[$i],
 			     	'backgroundColor' => $color[$i],
-			     	'borderRadius'	=> 100,
+			     	'borderRadius' => 5,
+
 				); 
 				
 			}
@@ -120,6 +121,7 @@ class Dashboard extends CI_Controller {
 					'data'	=> $holder['data'][$holder['unit_name'][$i]],
 					'borderColor' => $color[$i],
 			     	'backgroundColor' => $color[$i],
+			     	'borderRadius' => 15,
 				); 
 				
 			}

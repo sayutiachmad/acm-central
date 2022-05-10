@@ -42,7 +42,7 @@ function initSellUnitChart(){
 	    data: {},
 	    options: {
 	        scales: {
-                yAxes: [{
+                yAxes: {
                 	display: true,
                 	type: 'logarithmic',
                     ticks: {
@@ -59,7 +59,7 @@ function initSellUnitChart(){
                     gridLines: {
                     	display: true
                     }
-                }]
+                }
             },
 	        tooltips: {
               	callbacks: {
@@ -97,7 +97,7 @@ function initSellUnitDailyChart(){
 	    data: {},
 	    options: {
 	        scales: {
-                yAxes: [{
+                yAxes: {
                 	display: true,
                 	type: 'logarithmic',
                     ticks: {
@@ -114,7 +114,7 @@ function initSellUnitDailyChart(){
                     gridLines: {
                     	display: true
                     }
-                }]
+                }
             },
 	        tooltips: {
               	callbacks: {
