@@ -53,7 +53,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed text-sm accent-olive <?php echo ($sidebar_collapse ? 'sidebar-collapse' : '');?>" data-user-name="<?php echo $sess_data[SESSION_USER_NAME]?>" data-user-role="<?php echo $sess_data[SESSION_USER_ROLE];?>">
+<body class="hold-transition sidebar-mini layout-fixed text-sm accent-primary <?php echo ($sidebar_collapse ? 'sidebar-collapse' : '');?>" data-user-name="<?php echo $sess_data[SESSION_USER_NAME]?>" data-user-role="<?php echo $sess_data[SESSION_USER_ROLE];?>">
 
     <div class="wrapper">
 
@@ -62,7 +62,7 @@
       <!-- /.navbar -->
 
       <!-- Main Sidebar Container -->
-      <aside class="main-sidebar sidebar-dark-olive elevation-4">
+      <aside class="main-sidebar sidebar-light-primary elevation-4">
         <!-- Brand Logo -->
         <?php $this->load->view('top_bar/icon_bar'); ?>
 

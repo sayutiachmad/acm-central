@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
     
-        <div class="card card-outline card-olive">
+        <div class="card card-outline card-primary">
             <div class="card-header">
                 <h2 class="card-title"><i class="fas fa-chart-line"></i> Total Penjualan Unit Per Bulan</h2>
             </div>
@@ -36,7 +36,7 @@
 
     <div class="col-12 col-md-6">
     
-        <div class="card card-outline card-olive">
+        <div class="card card-outline card-primary">
             <div class="card-header">
                 <h2 class="card-title"><i class="fas fa-chart-bar"></i> Total Penjualan Unit Per Hari</h2>
             </div>
