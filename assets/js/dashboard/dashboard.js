@@ -64,6 +64,7 @@ function initSellUnitChart(){
 	        tooltips: {
               	callbacks: {
                   	label: function(tooltipItem, data) {
+                  		console.log(tooltipItem);
                     	return numeral(tooltipItem.value).format('0,0');
                   	}
               	}
