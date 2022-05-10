@@ -33,7 +33,6 @@ class Report extends CI_Controller {
 		$this->layout->set_script(base_url('assets/plugins/knockout/knockout.js'));
 		$this->layout->set_script(base_url('assets/plugins/sensortower-daterangepicker/daterangepicker.min.js'));
 		$this->layout->set_script(base_url('assets/plugins/numeraljs/min/numeral.min.js'));
-		$this->layout->set_script(base_url('assets/plugins/blockui/jquery.blockUI.js'));
 
 		$this->layout->set_script(base_url('assets/plugins/datatables/plugin/extra/sum().js'));
 		$this->layout->set_script(base_url('assets/plugins/datatables/plugin/FixedHeader-3.1.4/js/fixedHeader.bootstrap4.min.js'));

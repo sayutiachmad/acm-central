@@ -46,6 +46,41 @@ class Model_dashboard_chart extends CI_Model {
 
 	}
 
+	public function select_sell_unit_daily_chart_data($data){
+
+
+		$this->db->select(array(
+			'SUM( (trxd.dp_barang_harpok * trxd.dp_qty) ) AS total_harpok',
+			'SUM( (trxd.dp_barang_harjul * trxd.dp_qty) ) AS total_harjul',
+			'SUM(trxd.dp_diskon) AS total_diskon',
+			'SUM(trxd.dp_total) AS total_jual',
+			'trx.*',
+			'DATE_FORMAT(trx.tp_tanggal, "%d-%b-%Y") AS tanggal_transaksi',
+			'un.'.FIELD_PLANT_NAME.' AS unit_name'
+		));
+		$this->db->from('trx_penjualan_detail trxd');
+		$this->db->join('trx_penjualan trx', 'trx.tp_unit = trxd.dp_unit AND trx.tp_nofak = trxd.dp_nofak', 'left');
+		$this->db->join(TABLE_PLANT.' un', 'un.'.FIELD_PLANT_ID.' = trx.tp_unit', 'left');
+
+		if($data['fl_tanggal']){
+			[$start, $end] = explode(' - ', $data['fl_tanggal']);
+			$where['trx.tp_tanggal >='] = date('Y-m-d', strtotime($start));
+			$where['trx.tp_tanggal <='] = date('Y-m-d', strtotime($end));
+			$this->db->where($where);
+		}
+
+		$this->db->where('trx.tp_keterangan !=', "SMP");
+		$this->db->where('trx.tp_status', '0');
+
+		$this->db->group_by('trx.tp_unit');
+		$this->db->group_by('DATE(trx.tp_tanggal)');
+
+		$this->db->order_by('DATE(trx.tp_tanggal)', 'desc');
+		$this->db->order_by('trx.tp_unit', 'asc');
+		return $this->db->get()->result_array();
+
+	}
+
 
 }
 

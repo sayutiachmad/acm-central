@@ -24,7 +24,11 @@ class Dashboard extends CI_Controller {
 		//set breadcrumb
 		// $this->layout->set_breadcrumb('Dashboard',base_url());
 
+		$this->layout->set_style(base_url('assets/plugins/sensortower-daterangepicker/daterangepicker.min.css'));
+
 		$this->layout->set_script(base_url('assets/plugins/numeraljs/min/numeral.min.js'));
+		$this->layout->set_script(base_url('assets/plugins/knockout/knockout.js'));
+		$this->layout->set_script(base_url('assets/plugins/sensortower-daterangepicker/daterangepicker.min.js'));
 		$this->layout->set_script(base_url('assets/js/dashboard/dashboard.js'));
 
 		$data = array();
@@ -81,7 +85,52 @@ class Dashboard extends CI_Controller {
 		}
 
 	}
-	
+
+	public function get_sell_unit_daily_chart_data(){
+
+		if($this->input->is_ajax_request()){
+
+			$post = $this->input->post();
+
+			$res = $this->mdc->select_sell_unit_daily_chart_data($post);
+
+			$chart = array('labels' => array(), 'datasets' => array());
+			$holder = array('unit_name' => array(), 'data'=>array());
+			foreach ($res as $value) {
+
+				if(!in_array($value['tanggal_transaksi'], $chart['labels'])){
+					$chart['labels'][] = $value['tanggal_transaksi'];
+				}
+
+				if(!in_array($value['unit_name'], $holder['unit_name'])){
+					$holder['unit_name'][] = $value['unit_name'];
+				}
+
+				$holder['data'][$value['unit_name']][] = $value['total_harjul'];
+				
+			}
+
+			for ($i = 0; $i < count($holder['unit_name']) ; $i++) {
+
+				$color = rand_color();
+
+				$chart['datasets'][] = array(
+					'label'	=> $holder['unit_name'][$i],
+					'data'	=> $holder['data'][$holder['unit_name'][$i]],
+					'borderColor' => $color,
+			     	'backgroundColor' => $color,
+				); 
+				
+			}
+
+			echo json_encode($chart);
+			return;
+
+		}else{
+			exit(NO_DIRECT_ACCESS);
+		}
+
+	}
 
 
 }
