@@ -223,8 +223,8 @@ function initReportGrid(){
                 "defaultContent":"",
                 "class":"text-right",
                 "render":function(data,type,row,meta){
-                    let ppu = parseFloat(row.tp_total_harjul)-parseFloat(row.tp_total_harpok);
-                    let disc = row.tp_total_diskon;
+                    let ppu = parseFloat(row.total_harjul)-parseFloat(row.total_harpok);
+                    let disc = row.total_diskon;
 
                     let profit = parseFloat(ppu)- parseFloat(disc);
 
