@@ -380,7 +380,7 @@ function initReportGrid(){
                 $('.bukti-image img').attr('src', basic_url[0]+"//"+basic_url[2]+"/"+img[4]+"/"+img[5]+"/"+img[6]+"/"+img[7]+"/"+img[8]);
             }
         });
-    }
+    });
 
 }
 
