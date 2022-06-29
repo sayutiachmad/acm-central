@@ -353,6 +353,35 @@ function initReportGrid(){
           })
     } );
 
+    $('#tbl-data tbody').on('click','.view-img',function(){
+                
+        var img  = grid.row($(this).parents('tr')).data().tp_bukti_pembayaran_full_path.split("/");
+        var pay_date = grid.row($(this).parents('tr')).data().tp_tanggal_pembayaran;
+        var pay_method = grid.row($(this).parents('tr')).data().tp_metode_pembayaran;
+
+        var basic_url = base_url.split("/");
+        
+        $.confirm({
+            title: 'Bukti Pembayaran',
+            content: '' +
+                '<div class="bukti-image"><img style="    border: solid 1px #ddd;\n' +
+                '    margin-bottom: 10px;\n' +
+                '    border-radius: 4px;" src="" alt=""></div>' +
+                '',
+            animation: 'scale',
+            animationClose: 'top',
+            buttons: {
+                
+                close: function(){
+                    // lets the user close the modal.
+                }
+            },
+            onContentReady: function(){
+                $('.bukti-image img').attr('src', basic_url[0]+"//"+basic_url[2]+"/"+img[4]+"/"+img[5]+"/"+img[6]+"/"+img[7]+"/"+img[8]);
+            }
+        });
+    }
+
 }
 
 function initButton(){
