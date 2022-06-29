@@ -39,7 +39,7 @@ class Model_dashboard_chart extends CI_Model {
 		$this->db->group_by('YEAR(trx.tp_tanggal)');
 		$this->db->group_by('MONTH(trx.tp_tanggal)');
 
-
+		$this->db->order_by('trx.tp_unit', 'asc');
 		$this->db->order_by('YEAR(trx.tp_tanggal)', 'desc');
 		$this->db->order_by('MONTH(trx.tp_tanggal)', 'desc');
 		return $this->db->get()->result_array();
@@ -75,6 +75,7 @@ class Model_dashboard_chart extends CI_Model {
 		$this->db->group_by('trx.tp_unit');
 		$this->db->group_by('DATE(trx.tp_tanggal)');
 
+		$this->db->order_by('trx.tp_unit', 'asc');
 		$this->db->order_by('DATE(trx.tp_tanggal)', 'asc');
 		$this->db->order_by('trx.tp_unit', 'asc');
 		return $this->db->get()->result_array();
