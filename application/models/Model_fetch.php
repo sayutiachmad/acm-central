@@ -68,7 +68,7 @@ class Model_fetch extends CI_Model {
 			$pwd = $this->encryption->decrypt($res_db[FIELD_PLANT_HOST_PWD]);
 		}
 
-		$lastTrxDate = $this->selectLastTrxDate($res_db[FIELD_PLANT_ID]);
+		$lastTrxDate = $this->selectLastTrxDate($res_db[FIELD_PLANT_ID], 'M');
 
 
 		$db2 = $this->initDatabase($res_db, $pwd);
@@ -241,7 +241,9 @@ class Model_fetch extends CI_Model {
 			$pwd = $this->encryption->decrypt($res_db[FIELD_PLANT_HOST_PWD]);
 		}
 
-		$lastTrxDate = $this->selectLastTrxDate($res_db[FIELD_PLANT_ID]);
+		$lastTrxDate = $this->selectLastTrxDate($res_db[FIELD_PLANT_ID], 'S', 0);
+
+		echo $lastTrxDate['tanggal_trx'];
 
 
 		$db2 = $this->initDatabase($res_db, $pwd);
@@ -277,7 +279,7 @@ class Model_fetch extends CI_Model {
 
 					'tp_unit'						=> $res_db[FIELD_PLANT_ID],
 					'tp_nofak'						=> $value['jual_nofak'],
-					'tp_rtype'						=> 'M',
+					'tp_rtype'						=> 'S',
 					'tp_mitra'						=> "0",
 					'tp_mitra_name'					=> "Stokis",
 					'tp_tanggal'					=> $value['jual_tanggal'],
@@ -387,13 +389,22 @@ class Model_fetch extends CI_Model {
 
 	}
 	
-	private function selectLastTrxDate($unit){
+	private function selectLastTrxDate($unit, $rtype = null, $mitra = null){
 
 		$this->db->select(array(
-			'MAX(tp_tanggal) AS tanggal_trx'
+			'MAX(create_at) AS tanggal_trx'
 		));
 		$this->db->from('trx_penjualan');
 		$this->db->where('tp_unit', $unit);
+
+		if(!is_null($rtype)){
+			$this->db->where('tp_rtype', $rtype);
+		}
+
+		if(!is_null($mitra)){
+			$this->db->where('tp_mitra', $mitra);
+		}
+
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 
